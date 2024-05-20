@@ -126,25 +126,41 @@ void elf64SectionLoad(QFile* outFile,char* m_data,elf_info_st m_info)
     QTextStream out(outFile);
     for (uint32_t i = 0; i < m_info.elf_phnum; i++)
     {
+        int j = 0;
         Elf64_Phdr* programHeader;
         programHeader = (Elf64_Phdr*)(m_data + m_info.elf_phoff + m_info.elf_phentsize*i);
 
         QString loadStartAddr = QString::number(programHeader->p_paddr,16);
-        out<<"@"<<loadStartAddr<<"\n";
+
         int size = programHeader->p_memsz;
         if(size == 0)
             continue;
+        out<<"@"<<loadStartAddr<<"\n";
         char *startAddr = m_data + programHeader->p_offset;
+        if(size%16 != 0)
+            size -= 16;
         for(int j = 0;j<size;j+=16)
         {
             for(int k=0;k<16;k++)
             {
-                QString temp = QString::number(*(startAddr+j+k),16);
+                QString temp = QString::number(*(unsigned char*)(startAddr+j+k),16);
+                if(temp.length()==1)
+                    temp.prepend("0");
                 out<<temp<<" ";
             }
             out<<"\n";
         }
+        for(int k =0;k<size%16;k++)
+        {
+            QString temp = QString::number(*(unsigned char*)(startAddr+j+k),16);
+            if(temp.length()==1)
+                temp.prepend("0");
+            out<<temp<<" ";
+        }
+        if(size%16 != 0)
+            out<<"\n";
     }
+    out<<"q\n";
 }
 void elf32SectionLoad(QFile* outFile,char* m_data,elf_info_st m_info)
 {

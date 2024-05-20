@@ -1839,7 +1839,7 @@ void MainWindow::action_testFileConvert_clicked()
 int sourceFileOpen(QString filePath)
 {
     //-2:文件后缀名错误,-1: error,0:correct
-    if(filePath.contains(".out")||filePath.contains(".coff"))
+    if(filePath.contains(".out")||filePath.contains(".coff")||filePath.contains(".elf"))
     {
         return(outFileOpen(filePath));
     }
@@ -1952,7 +1952,7 @@ void MainWindow::on_pushButton_openSource_clicked()
         gStrFileName = "D:/";
     pFileName->setDirectory(gStrFileName);//设置打开的默认目录
     //    pFileName->setNameFilter(tr("out(*.out *.coff);;excel(*.csv *.xls *.xlsx)"));//设置限定文件类型
-    pFileName->setNameFilter(tr("file(*.out *.coff *.csv *.xls *.xlsx *.hex *.txt)"));//设置限定文件类型
+    pFileName->setNameFilter(tr("file(*.out *.elf *.coff *.csv *.xls *.xlsx *.hex *.txt)"));//设置限定文件类型
     pFileName->setOption(QFileDialog::DontResolveSymlinks);//可以加载链接路径而不会跳转
 
     if (pFileName->exec()!=QFileDialog::Accepted)
