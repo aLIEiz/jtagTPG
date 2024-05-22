@@ -574,9 +574,10 @@ int outFileOpen(QString strFileName)
 
         if(gCurrentCfg.coreCfg[gCurrentCfg.currentCore].pcFromMap == false)
             goto noMap;
-        strFileName.chop(4);
-        strFileName.append(".map");
-        QFile mapFile(strFileName);
+        QString strFileNameTemp = strFileName;
+        strFileNameTemp.chop(4);
+        strFileNameTemp.append(".map");
+        QFile mapFile(strFileNameTemp);
         if(!mapFile.open(QIODevice::ReadOnly|QIODevice::Text)){
             gWindow->ui->textBrowser_logShower->append("未找到同名map文件！");
             goto noMap;
@@ -601,8 +602,6 @@ int outFileOpen(QString strFileName)
     if(0)
     {
 noMap:
-        strFileName.chop(4);
-        strFileName.append(".out");
         if(elfFileSign)
             gPcStartAddr = getPcFromElf(strFileName);
         else

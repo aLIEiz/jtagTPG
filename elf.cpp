@@ -132,7 +132,8 @@ void elf64SectionLoad(QFile* outFile,char* m_data,elf_info_st m_info)
 
         QString loadStartAddr = QString::number(programHeader->p_paddr,16);
 
-        int size = programHeader->p_memsz;
+//        int size = programHeader->p_memsz;
+        int size = programHeader->p_filesz;
         if(size == 0)
             continue;
         out<<"@"<<loadStartAddr<<"\n";

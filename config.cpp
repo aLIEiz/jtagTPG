@@ -433,6 +433,7 @@ int coreCfgFileRead(Uint32 tapNum,QString filePath,coreCfgTemp *coreCfg)
     }
     if(!settings->value("DMA_MAX_LENGTH_IN_ONE_SEQ","").toString().isEmpty())
         coreCfg->dmaMaxLengthInOneSeq = settings->value("DMA_MAX_LENGTH_IN_ONE_SEQ","").toString().toULongLong(&ok,16);
+
     settings->endGroup();
 
     settings->beginGroup("CMD");
@@ -779,7 +780,7 @@ void logFileRead(MainWindow* window,QString fileName)
     int i,missCount = 0;
     bool fileCfgScan;
     QSettings *settings = new QSettings(fileName,QSettings::IniFormat);
-    cfgTemp mCfgTemp;
+
     //Read
     settings->beginGroup("LOCAL");
     gStrFileName = settings->value("CURRENT_PATH","").toString();
@@ -789,6 +790,7 @@ void logFileRead(MainWindow* window,QString fileName)
     QString currentCfgName = settings->value("CURRENT_CFG_NAME","").toString();
     for(i=0;i<gItemNum;i++)
     {
+        cfgTemp mCfgTemp;
         QString cfgFilePath = settings->value(gCfgListName[i]).toString();
         filePathDecode(cfgFilePath);
         if(cfgFileRead(cfgFilePath,mCfgTemp) == -1)
